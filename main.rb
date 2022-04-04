@@ -21,7 +21,12 @@ end
 def answer_to_lovely_girl(bot, chat_id, text, owner_chat_id, owner_text, sender_message)
   send_message(bot, chat_id, text)
   send_message(bot, owner_chat_id, owner_text)
-  send_message(bot, owner_chat_id, "Она написала '#{sender_message}'")
+  send_message(bot, owner_chat_id, 'Она отправила:')
+  send_message(bot, owner_chat_id, sender_message)
+end
+
+def answer_to_not_lovely_girl(bot, chat_id, text)
+  send_message(bot, chat_id, text)
 end
 
 def bot_activity(bot, message)
@@ -35,7 +40,7 @@ def bot_activity(bot, message)
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, "Привет, Настюшка\nКогда тебе будет не хватать меня, помни: я всегда есть здесь\nОтправляй сюда сообщение и получай в ответ фразу, которую я придумал для тебя")
-    answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Настюшка-Сплюшка скучает 💟\nЕе порадовало:\n#{text}", message)
+    answer_to_not_lovely_girl(bot, message.chat.id, text)
   when KATYA_USERNAME
     phrases = PHRASES_FOR_KATYA
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
