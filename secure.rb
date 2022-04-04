@@ -4,6 +4,7 @@ VIKA_USERNAME = 'torytelller'
 NASTYA_USERNAME = 'aurumlie'
 ARSENIJ_USERNAME = 'grom4237'
 DENIS_USERNAME = 'akkkkkkkira'
+KATYA_USERNAME = 'Your_atmn'
 
 DENIS_ID = '764573214'
 ARSENIJ_ID = '711526473'
