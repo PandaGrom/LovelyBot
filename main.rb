@@ -22,11 +22,30 @@ def answer_to_lovely_girl(bot, chat_id, text, owner_chat_id, owner_text, sender_
   send_message(bot, chat_id, text)
   send_message(bot, owner_chat_id, owner_text)
   send_message(bot, owner_chat_id, 'Она отправила:')
-  send_message(bot, owner_chat_id, sender_message)
+  send_message(bot, owner_chat_id, sender_message.text)
 end
 
 def answer_to_not_lovely_girl(bot, chat_id, text)
   send_message(bot, chat_id, text)
+end
+
+def send_message_to_brother(bot, chat_id, text)
+  case chat_id
+  when DENIS_ID
+    send_message(bot, ARSENIJ_ID, formatted_text(text))
+  when ARSENIJ_ID
+    send_message(bot, DENIS_ID, formatted_text(text))
+  else
+    nil
+  end
+end
+
+def brother_conversation?(text)
+  formatted_text(text)
+end
+
+def formatted_text(text)
+  text.split('/send_to_brother ')[1]
 end
 
 def bot_activity(bot, message)
@@ -47,9 +66,13 @@ def bot_activity(bot, message)
     greeting(bot, message, message.chat.id, "Уважаемая Белочка, прошло недоразумение, вы так ахуенны что ослепили меня и я подумал что это пришел кто-то чужой, простите меня пожалуйста, я к вашим услугам")
     answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Белочка скучает 💟\nБурундук шепчет ей на ушко:\n#{text}", message)
   when DENIS_USERNAME
+    send_message_to_brother if brother_conversation?
+    
     send_message(bot, message.chat.id, 'Обожаю вас, мой хозяин')
     send_message(bot, message.chat.id, "Белочке доступно #{(PHRASES_FOR_KATYA).count} приятных фраз")
   when ARSENIJ_USERNAME
+    send_message_to_brother if brother_conversation?
+
     send_message(bot, message.chat.id, 'Вассап, Нигга')
     send_message(bot, message.chat.id, "Вашей любимой доступно #{(PHRASES_FOR_VIKA + GENERAL_PHRASES).count} приятных фраз")
   else
