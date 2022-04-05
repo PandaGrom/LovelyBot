@@ -32,9 +32,9 @@ end
 def send_message_to_brother(bot, chat_id, text)
   case chat_id
   when DENIS_ID
-    send_message(bot, ARSENIJ_ID, formatted_text(text))
+    send_message(bot, ARSENIJ_ID, attach_nickname(DENIS_USERNAME, formatted_text(text)))
   when ARSENIJ_ID
-    send_message(bot, DENIS_ID, formatted_text(text))
+    send_message(bot, DENIS_ID,  attach_nickname(ARSENIJ_USERNAME, formatted_text(text)))
   else
     nil
   end
@@ -46,6 +46,28 @@ end
 
 def formatted_text(text)
   text.split('/send_to_brother ')[1]
+end
+
+def send_info_messages_to_denis(bot, message)
+  send_message(bot, message.chat.id, 'Обожаю вас, мой хозяин')
+  send_message(bot, message.chat.id, "Белочке доступно #{(PHRASES_FOR_KATYA).count} приятных фраз")
+end
+
+def send_info_messages_to_arsenij(bot, message)
+  send_message(bot, message.chat.id, 'Вассап, Нигга')
+  send_message(bot, message.chat.id, "Вашей любимой доступно #{(PHRASES_FOR_VIKA + GENERAL_PHRASES).count} приятных фраз")
+end
+
+def message_for_squirrel?(text)
+  text.split('/send_to_squirrel ')[1]
+end
+
+def send_to_squirrel(bot, text)
+  send_message(bot, KATYA_ID, text.split('/send_to_squirrel ')[1])
+end
+
+def attach_nickname(nickname, text)
+  "[#{nickname}] #{text}"
 end
 
 def bot_activity(bot, message)
@@ -66,15 +88,12 @@ def bot_activity(bot, message)
     greeting(bot, message, message.chat.id, "Уважаемая Белочка, прошло недоразумение, вы так ахуенны что ослепили меня и я подумал что это пришел кто-то чужой, простите меня пожалуйста, я к вашим услугам")
     answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Белочка скучает 💟\nБурундук шепчет ей на ушко:\n#{text}", message)
   when DENIS_USERNAME
-    send_message_to_brother if brother_conversation?
-    
-    send_message(bot, message.chat.id, 'Обожаю вас, мой хозяин')
-    send_message(bot, message.chat.id, "Белочке доступно #{(PHRASES_FOR_KATYA).count} приятных фраз")
+    send_to_squirrel(bot, message.text) if message_for_squirrel?(message.text)
+    send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
+    send_info_messages_to_denis(bot, message) unless brother_conversation?(message.text) || message_for_squirrel?(message.text)
   when ARSENIJ_USERNAME
-    send_message_to_brother if brother_conversation?
-
-    send_message(bot, message.chat.id, 'Вассап, Нигга')
-    send_message(bot, message.chat.id, "Вашей любимой доступно #{(PHRASES_FOR_VIKA + GENERAL_PHRASES).count} приятных фраз")
+    send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
+    send_info_messages_to_arsenij(bot, message) unless brother_conversation?(message.text)
   else
     send_message(bot, message.chat.id, 'Тебя никто не любит, пошел нахуй отсюда. Умри.')
   end
