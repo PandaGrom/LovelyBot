@@ -3,7 +3,6 @@ require './secure.rb'
 require './vika_phrases.rb'
 require './nastya_phrases.rb'
 require './general_phrases.rb'
-require './katya_phrases.rb'
 
 def send_message(bot, chat_id, text)
   bot.api.send_message(
@@ -58,14 +57,6 @@ def send_info_messages_to_arsenij(bot, message)
   send_message(bot, message.chat.id, "Вашей любимой доступно #{(PHRASES_FOR_VIKA + GENERAL_PHRASES).count} приятных фраз")
 end
 
-def message_for_squirrel?(text)
-  text.split('/send_to_squirrel ')[1]
-end
-
-def send_to_squirrel(bot, text)
-  send_message(bot, KATYA_ID, text.split('/send_to_squirrel ')[1])
-end
-
 def attach_nickname(nickname, text)
   "[#{nickname}] #{text}"
 end
@@ -81,12 +72,7 @@ def bot_activity(bot, message)
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, "Привет, Настюшка\nКогда тебе будет не хватать меня, помни: я всегда есть здесь\nОтправляй сюда сообщение и получай в ответ фразу, которую я придумал для тебя")
-    answer_to_not_lovely_girl(bot, message.chat.id, text)
-  when KATYA_USERNAME
-    phrases = PHRASES_FOR_KATYA
-    text = "#{phrases.sample}\n\n1 из #{phrases.count}"
-    greeting(bot, message, message.chat.id, "Уважаемая Белочка, прошло недоразумение, вы так ахуенны что ослепили меня и я подумал что это пришел кто-то чужой, простите меня пожалуйста, я к вашим услугам")
-    answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Белочка скучает 💟\nБурундук шепчет ей на ушко:\n#{text}", message)
+    answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Киса скучает\nДенис говорит:\n#{text}", message)
   when DENIS_USERNAME
     send_to_squirrel(bot, message.text) if message_for_squirrel?(message.text)
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
