@@ -49,7 +49,6 @@ end
 
 def send_info_messages_to_denis(bot, message)
   send_message(bot, message.chat.id, 'Обожаю вас, мой хозяин')
-  send_message(bot, message.chat.id, "Белочке доступно #{(PHRASES_FOR_KATYA).count} приятных фраз")
 end
 
 def send_info_messages_to_arsenij(bot, message)
