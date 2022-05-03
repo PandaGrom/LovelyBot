@@ -72,7 +72,7 @@ def bot_activity(bot, message)
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, "Привет, Настюшка\nКогда тебе будет не хватать меня, помни: я всегда есть здесь\nОтправляй сюда сообщение и получай в ответ фразу, которую я придумал для тебя")
-    answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Киса скучает\nДенис говорит:\n#{text}", message)
+    answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Настя скучает\nДенис говорит:\n#{text}", message)
   when DENIS_USERNAME
     send_to_squirrel(bot, message.text) if message_for_squirrel?(message.text)
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
