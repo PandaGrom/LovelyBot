@@ -12,7 +12,7 @@ class CalculateRest
   private
 
   def days
-    rest_in_seconds / seconds_in_day
+    (rest_in_seconds / seconds_in_day) - 1
   end
 
   def hours

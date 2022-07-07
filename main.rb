@@ -41,7 +41,7 @@ def send_message_to_brother(bot, chat_id, text)
 end
 
 def rest_of_meeting(final_date)
-  CalculateRest.new(final_date).rest
+  CalculateRest.new(final_date: final_date).rest
 end
 
 def brother_conversation?(text)
@@ -74,23 +74,23 @@ end
 def bot_activity(bot, message)
   case message.from.username
   when VIKA_USERNAME
-    send_rest(bot, message.chat.id, Time.new(2022, 8, 3))
+    send_rest(bot, message, Time.new(2022, 8, 3))
     phrases = PHRASES_FOR_VIKA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, 'Если тебе не будет хватать меня - ищи здесь')
     answer_to_lovely_girl(bot, message.chat.id, text, ARSENIJ_ID, "Торя ждёт, Торя плачет\nЕё любимый говорит:\n#{text}", message)
   when NASTYA_USERNAME
-    send_rest(bot, message.chat.id, Time.new(2022, 8, 25))
+    send_rest(bot, message, Time.new(2022, 8, 25))
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, "Пиши сюда если очень нужно)")
     answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Настя скучает\nДенис говорит:\n#{text}", message)
   when DENIS_USERNAME
-    send_rest(bot, message.chat.id, Time.new(2022, 8, 25))
+    send_rest(bot, message, Time.new(2022, 8, 25))
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
     send_info_messages_to_denis(bot, message) unless brother_conversation?(message.text)
   when ARSENIJ_USERNAME
-    send_rest(bot, message.chat.id, Time.new(2022, 8, 3))
+    send_rest(bot, message, Time.new(2022, 8, 3))
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
     send_info_messages_to_arsenij(bot, message) unless brother_conversation?(message.text)
   else
