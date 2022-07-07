@@ -3,6 +3,7 @@ require './secure.rb'
 require './vika_phrases.rb'
 require './nastya_phrases.rb'
 require './general_phrases.rb'
+require './calculate_rest.rb'
 
 def send_message(bot, chat_id, text)
   bot.api.send_message(
@@ -39,6 +40,10 @@ def send_message_to_brother(bot, chat_id, text)
   end
 end
 
+def rest_of_meeting(final_date)
+  CalculateRest.new(final_date).rest
+end
+
 def brother_conversation?(text)
   formatted_text(text)
 end
@@ -56,6 +61,12 @@ def send_info_messages_to_arsenij(bot, message)
   send_message(bot, message.chat.id, "Вашей любимой доступно #{(PHRASES_FOR_VIKA + GENERAL_PHRASES).count} приятных фраз")
 end
 
+def send_rest(bot, message, final_date)
+  return unless message.text == '/rest'
+
+  send_message(bot, message.chat.id, rest_of_meeting(final_date))
+end
+
 def attach_nickname(nickname, text)
   "[#{nickname}] #{text}"
 end
@@ -63,19 +74,23 @@ end
 def bot_activity(bot, message)
   case message.from.username
   when VIKA_USERNAME
+    send_rest(bot, message.chat.id, Time.new(2022, 8, 3))
     phrases = PHRASES_FOR_VIKA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, 'Если тебе не будет хватать меня - ищи здесь')
     answer_to_lovely_girl(bot, message.chat.id, text, ARSENIJ_ID, "Торя ждёт, Торя плачет\nЕё любимый говорит:\n#{text}", message)
   when NASTYA_USERNAME
+    send_rest(bot, message.chat.id, Time.new(2022, 8, 25))
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
-    greeting(bot, message, message.chat.id, "Привет, Настюшка\nКогда тебе будет не хватать меня, помни: я всегда есть здесь\nОтправляй сюда сообщение и получай в ответ фразу, которую я придумал для тебя")
+    greeting(bot, message, message.chat.id, "Пиши сюда если очень нужно)")
     answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Настя скучает\nДенис говорит:\n#{text}", message)
   when DENIS_USERNAME
+    send_rest(bot, message.chat.id, Time.new(2022, 8, 25))
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
     send_info_messages_to_denis(bot, message) unless brother_conversation?(message.text)
   when ARSENIJ_USERNAME
+    send_rest(bot, message.chat.id, Time.new(2022, 8, 3))
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
     send_info_messages_to_arsenij(bot, message) unless brother_conversation?(message.text)
   else
