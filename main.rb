@@ -80,13 +80,13 @@ def bot_activity(bot, message)
     greeting(bot, message, message.chat.id, 'Если тебе не будет хватать меня - ищи здесь')
     answer_to_lovely_girl(bot, message.chat.id, text, ARSENIJ_ID, "Торя ждёт, Торя плачет\nЕё любимый говорит:\n#{text}", message)
   when NASTYA_USERNAME
-    send_rest(bot, message, Time.new(2022, 8, 25))
+    send_rest(bot, message, Time.new(2022, 8, 25, 17, 0, 0))
     phrases = PHRASES_FOR_NASTYA + GENERAL_PHRASES
     text = "#{phrases.sample}\n\n1 из #{phrases.count}"
     greeting(bot, message, message.chat.id, "Пиши сюда если очень нужно)")
     answer_to_lovely_girl(bot, message.chat.id, text, DENIS_ID, "Настя скучает\nДенис говорит:\n#{text}", message)
   when DENIS_USERNAME
-    send_rest(bot, message, Time.new(2022, 8, 25))
+    send_rest(bot, message, Time.new(2022, 8, 25, 17, 0, 0))
     send_message_to_brother(bot, message.chat.id, message.text) if brother_conversation?(message.text)
     send_info_messages_to_denis(bot, message) unless brother_conversation?(message.text)
   when ARSENIJ_USERNAME
